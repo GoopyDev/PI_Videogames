@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo
 
-  //id, nombre, descripcion, plataformas, imagen  , fecha_lanzamiento, rating
+  //id, nombre, descripcion, plataformas, imagen  , fecha_lanzamiento, rating, genre
   //PK, !Null , !Null MV   , !Null MV   , !Null MV,
   sequelize.define("videogame", {
     id: {
@@ -43,9 +43,9 @@ module.exports = (sequelize) => {
       defaultValue: "Missing rating",
     },
     genre: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
-      defaultValue: "Missing genre",
+      defaultValue: [],
     },
   });
 };

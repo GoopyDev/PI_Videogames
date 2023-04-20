@@ -42,18 +42,13 @@ router.get(`/genres`, async (req, res) => {
   }
 });
 
-const validationOne = (req, res, next) => {
-  //  id, nombre, descripcion, plataformas, imagen  , fecha_lanzamiento, rating
-  const { nombre, descripcion, plataformas, imagen  , fecha_lanzamiento, rating, genre } = req.body; // prettier-ignore
-  // prettier-ignore
-  if ( !nombre || !descripcion || !plataformas || !genre || !imagen || !fecha_lanzamiento || !rating ) {
-    return res.status(400).json({ error: "Error en la validación, faltan datos" }); // prettier-ignore
-  } else {
-    next();
-  }
-};
-
-router.post(`/videogames`, validationOne, async (req, res) => {
+// *** POST VIDEOGAMES *** //
+// Importamos validateGameOne() que verifica que los campos para hacer POST no estén vacíos
+// Importamos validateGameTwo() que verifica que los campos Nombre y Descripción no estén ya creados
+const { validateGameOne } = require("../controllers/validators/createVideogameValidation1"); // prettier-ignore
+const { validateGameTwo } = require("../controllers/validators/createVideogameValidation2"); // prettier-ignore
+// prettier-ignore
+router.post(`/videogames`, validateGameOne, validateGameTwo, async (req, res) => {
   try {
     const { game } = req.body;
     await createVideogame(game);

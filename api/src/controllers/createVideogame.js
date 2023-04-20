@@ -1,33 +1,35 @@
-const game = require("../models/Videogame");
+const { Videogame } = require("../db");
+// const { validateGameTwo } = require("./validators/createVideogameValidation2");
 const KEY = process.env.API_KEY;
 
 const createVideogame = async (gameData) => {
   const {
-    id,
     nombre,
     descripcion,
     plataformas,
     imagen,
     fecha_lanzamiento,
     rating,
+    genre,
   } = gameData;
 
-  if (!id || !nombre || !descripcion || !plataformas)
-    throw Error("Faltan datos necesarios para crear el juego");
+  // Segunda validación de los parámetros necesarios para crear un videojuego
+  // validateGameTwo(); // Arrojará un error si el juego ya existe. Si no, se avanza con la creación del juego
 
   const newGame = {
-    id,
     nombre,
     descripcion,
     plataformas,
     imagen,
     fecha_lanzamiento,
     rating,
+    genre,
   };
-  //   const obj = await axios
-  //     .get(`https://api.rawg.io/api/games?key=${KEY}`)
-  //     .then((response) => response.data);
-  //   return obj;
+
+  return Videogame.create(newGame).then((newVideogame) => {
+    console.log("Videojuego creado con éxito");
+    return newVideogame.toJSON();
+  });
 };
 
 module.exports = createVideogame;
