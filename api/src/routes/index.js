@@ -26,7 +26,8 @@ router.get(`/videogames`, async (req, res) => {
 router.get("/videogames/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    let games = await getVideogameById(id);
+    const { source } = req.query;
+    let games = await getVideogameById(id, source);
     res.status(200).json(games);
   } catch (error) {
     res.status(400).json({ error: error.message });
