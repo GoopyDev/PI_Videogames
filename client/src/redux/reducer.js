@@ -20,11 +20,12 @@ export default function rootReducer(state = globalState, action) {
         newDbGames: [...state.newDbGames, ...action.payload.dbGames],
       };
     case "GET_VIDEOGAME_BY_ID":
-      return {
-        ...state,
-        apiGames: action.payload,
-        newDbGames: [...state.newDbGames, ...action.payload],
-      };
+      console.log("PAYLOAD: ");
+      console.log(action.payload);
+      return { ...state, detail: action.payload };
+    // apiGames: action.payload,
+    // newDbGames: [...state.newDbGames, ...action.payload],
+    // };
     case "GET_DETAIL":
       return { ...state, detail: action.payload };
     case "CLEAN_DETAIL":

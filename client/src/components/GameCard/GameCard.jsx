@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import "./GameCard.module.css";
 
 //prettier-ignore
 const genreColors = {
@@ -42,6 +44,10 @@ const CardContainer = styled.div`
   }
   @media screen and (max-width: 800px) {
     width: 95%;
+  }
+  &.noStyle {
+    display: inline-block;
+    text-decoration: none;
   }
 `;
 
@@ -105,39 +111,41 @@ export default function GameCard(props) {
     props.gameData || {};
   return (
     // id, nombre, descripcion, plataformas, imagen, fecha_lanzamiento, rating, genre
-    <CardContainer className="card">
-      <CardSectionLeft>
-        <h2 style={{ marginBottom: "0" }}>{name}</h2>
-        <Released>{released}</Released>
-        <GenreBox>
-          {genres?.map((categoria) => (
-            <span style={{ backgroundColor: `${genreColors[categoria.id]}` }}>
-              {categoria.name}
-            </span>
-          ))}
-        </GenreBox>
-        <PlatformBox>
-          {platforms?.map((platform) => (
-            <span
-              style={{
-                margin: "3px 5px",
-                padding: "0 3px",
-                backgroundColor: "#222A",
-                borderRadius: "5px",
-              }}
-            >
-              {platform.platform.name}
-            </span>
-          ))}
-        </PlatformBox>
-      </CardSectionLeft>
+    <CardContainer key={id} className="card">
+      <Link to={`/DetailPage?id=${id}`}>
+        <CardSectionLeft>
+          <h2 style={{ marginBottom: "0" }}>{name}</h2>
+          <Released>{released}</Released>
+          <GenreBox>
+            {genres?.map((categoria) => (
+              <span style={{ backgroundColor: `${genreColors[categoria.id]}` }}>
+                {categoria.name}
+              </span>
+            ))}
+          </GenreBox>
+          <PlatformBox>
+            {platforms?.map((platform) => (
+              <span
+                style={{
+                  margin: "3px 5px",
+                  padding: "0 3px",
+                  backgroundColor: "#222A",
+                  borderRadius: "5px",
+                }}
+              >
+                {platform.platform.name}
+              </span>
+            ))}
+          </PlatformBox>
+        </CardSectionLeft>
 
-      <CardSectionRight>
-        <ImageContainer>
-          <CardImg src={short_screenshots[0]?.image} alt="GameImg" />
-        </ImageContainer>
-        <label>Rating: {rating}</label>
-      </CardSectionRight>
+        <CardSectionRight>
+          <ImageContainer>
+            <CardImg src={short_screenshots[0]?.image} alt="GameImg" />
+          </ImageContainer>
+          <label>Rating: {rating}</label>
+        </CardSectionRight>
+      </Link>
     </CardContainer>
   );
 }

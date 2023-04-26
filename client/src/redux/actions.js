@@ -29,9 +29,8 @@ export const getVideogames = () => {
 export const getVideogameById = (id, source = "api") => {
   return async function (dispatch) {
     console.log("Obteniendo detalles del juego...");
-    const data = await axios(
-      `http://localhost:3001/videogames/${id}?source=${source}`
-    )
+    const data = await axios
+      .get(`http://localhost:3001/videogames/${id}?source=${source}`)
       .then((response) => {
         console.log("Data:");
         console.log(response.data);

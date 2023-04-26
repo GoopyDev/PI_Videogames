@@ -16,14 +16,14 @@ export default function CardsContainer() {
 
   useEffect(() => {
     dispatch(getVideogames());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
       <h2>Juegos de la biblioteca</h2>
       <CardsDiv>
         {gamesData.map((game, index) => {
-          return <GameCard class="card" gameData={game} />;
+          return <GameCard key={index} class="card" gameData={game} />;
         })}
       </CardsDiv>
     </div>
