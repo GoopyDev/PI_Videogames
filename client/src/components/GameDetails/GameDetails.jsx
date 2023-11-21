@@ -189,7 +189,12 @@ class GameDetails extends React.Component {
     // const url = new URLSearchParams(window.location.search);
     // const id = url.get("id");
     const id = new URLSearchParams(window.location.search).get("id");
-    await this.props.getVideogameById(id);
+    const source =
+      new URLSearchParams(window.location.search).get("source") || "api";
+    console.log(
+      `Envío peticion de juego con los datos: ID: ${id} Source: ${source}`
+    );
+    await this.props.getVideogameById(id, source);
   }
 
   componentWillUnmount() {
@@ -197,6 +202,7 @@ class GameDetails extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const {
       id,
       name,
@@ -207,50 +213,67 @@ class GameDetails extends React.Component {
       released,
       rating,
       genres,
-    } = this.props.game.detail;
+    } =
+      this.props.game?.detail[0]?.apiGames?.results[0] ||
+      this.props.game?.detail[0]?.dbGames[0] ||
+      [];
 
     // const miHTML = validarHTML(description);
     return (
       <DetailContainer>
-        <Title>{name}</Title>
+        {id ? (
+          <div>
+            <Title>{name}</Title>
 
-        <InfoDiv>
-          <Rating>
-            Rating: {rating}
-            <br />
-            ✰⭐
-          </Rating>
+            <InfoDiv>
+              <Rating>
+                Rating: {rating}
+                <br />
+                ✰⭐
+              </Rating>
 
-          <ID>Game ID: {id}</ID>
+              <ID>Game ID: {id}</ID>
 
-          <ReleaseDate>
-            Lanzamiento:
-            <br />
-            {released}
-          </ReleaseDate>
-        </InfoDiv>
+              <ReleaseDate>
+                Lanzamiento:
+                <br />
+                {released}
+              </ReleaseDate>
+            </InfoDiv>
 
-        <Genres>{genres?.map((genre) => genre.name)}</Genres>
+            <Genres>{genres?.map((genre) => genre.name)}</Genres>
 
-        <IMGDiv>
-          <img src={background_image} alt="Game Background" />
-          <img
-            src={background_image_additional}
-            alt="Additional Game Background"
-          />
-        </IMGDiv>
+            <IMGDiv>
+              <img src={background_image} alt="Game Background" />
+              <img
+                src={background_image_additional}
+                alt="Additional Game Background"
+              />
+            </IMGDiv>
 
-        <Label>Plataformas disponibles:</Label>
-        <PlatformDiv>
-          {platforms?.map((platform) => {
-            return <PlatformSpan>{platform.platform.name}</PlatformSpan>;
-          })}
-        </PlatformDiv>
+            <Label>Plataformas disponibles:</Label>
+            <PlatformDiv>
+              {platforms?.map((platform, index) => {
+                return (
+                  <PlatformSpan key={index}>
+                    {platform.platform.name}
+                  </PlatformSpan>
+                );
+              })}
+            </PlatformDiv>
 
-        <Description>
-          <DescriptionTitle>Descripción:</DescriptionTitle>
-          <DescriptionText dangerouslySetInnerHTML={{ __html: description }} />
-        </Description>
+            <Description>
+              <DescriptionTitle>Descripción:</DescriptionTitle>
+              <DescriptionText
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            </Description>
+          </div>
+        ) : (
+          <div>
+            <p>"No hay datos"</p>
+          </div>
+        )}
       </DetailContainer>
     );
   }

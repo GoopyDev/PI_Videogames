@@ -10,9 +10,9 @@
 }
 .App::before {
   content: "";
+  background: fixed;
   background-image: url("./images/3d-hexagon-wallpaper513907-2752.jpg");
   background-size: cover;
-  /* background-attachment: fixed; */
   position: absolute;
   top: 0px;
   right: 0px;

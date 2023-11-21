@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import NesControl from "../../images/NES-Controller_SearchBar.png";
 import { useState } from "react";
-import { getVideogameById } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
+import Filtros from "../Filtros/Filtros";
+import { cleanDetail } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 
 const SearchContainer = styled.div`
@@ -41,38 +43,53 @@ const SearchInput = styled.input`
   border-radius: 4px;
 `;
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   const [input, setInput] = useState({
     search: "",
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  function buscar() {
+    dispatch(cleanDetail());
+    const itemBuscado = /^\d+$/.test(input.search)
+      ? Number(input.search)
+      : input.search;
+    console.log(`Estoy buscando un: "${typeof itemBuscado}"`);
+    typeof itemBuscado === "number"
+      ? navigate(`/SearchPage?id=${itemBuscado}`)
+      : navigate(`/SearchPage?name=${itemBuscado}`);
+  }
   function handleChange(event) {
     setInput({ ...input, [event.target.name]: event.target.value });
   }
 
-  async function handleKeyPress(event) {
+  function handleKeyPress(event) {
     if (event.key === "Enter") {
-      dispatch(getVideogameById(input.search));
+      // dispatch(getVideogameById(input.search));
+      buscar();
     }
   }
 
   return (
-    <SearchContainer>
-      <ElementsBox>
-        <LabelContainer>
-          <label htmlFor="search">B u s c a r</label>
-          <label htmlFor="search">j u e g o s:</label>
-        </LabelContainer>
-        <SearchInput
-          type="text"
-          name="search"
-          id="search"
-          value={input.search}
-          onChange={handleChange}
-          onKeyDown={handleKeyPress}
-        />
-      </ElementsBox>
-    </SearchContainer>
+    <div>
+      <SearchContainer>
+        <ElementsBox>
+          <LabelContainer>
+            <label htmlFor="search">B u s c a r</label>
+            <label htmlFor="search">j u e g o s:</label>
+          </LabelContainer>
+          <SearchInput
+            type="text"
+            name="search"
+            id="search"
+            value={input.search}
+            onChange={handleChange}
+            onKeyDown={handleKeyPress}
+          />
+        </ElementsBox>
+      </SearchContainer>
+      <Filtros />
+    </div>
   );
 }

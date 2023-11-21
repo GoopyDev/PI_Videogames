@@ -117,15 +117,19 @@ export default function GameCard(props) {
           <h2 style={{ marginBottom: "0" }}>{name}</h2>
           <Released>{released}</Released>
           <GenreBox>
-            {genres?.map((categoria) => (
-              <span style={{ backgroundColor: `${genreColors[categoria.id]}` }}>
+            {genres?.map((categoria, index) => (
+              <span
+                key={index}
+                style={{ backgroundColor: `${genreColors[categoria.id]}` }}
+              >
                 {categoria.name}
               </span>
             ))}
           </GenreBox>
           <PlatformBox>
-            {platforms?.map((platform) => (
+            {platforms?.map((platform, index) => (
               <span
+                key={index}
                 style={{
                   margin: "3px 5px",
                   padding: "0 3px",
